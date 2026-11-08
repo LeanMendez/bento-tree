@@ -1,0 +1,26 @@
+---
+interface Props {
+  label: string;
+  title: string;
+}
+const { label, title } = Astro.props;
+---
+
+<p class="latest hide-sm">
+  <span class="label">{label}</span> {title}
+</p>
+
+<style>
+  .latest {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>
