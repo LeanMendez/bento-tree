@@ -1,0 +1,10 @@
+{
+  // Sin datos personales: perfil/links por variables de build; secrets con `wrangler secret put`.
+  "name": "bento-tree",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "kv_namespaces": [
+    // Estado persistente de Spotify (última playlist propia). Se provisiona en F3 (deploy).
+    { "binding": "BENTO_KV" },
+  ],
+}

@@ -5,3 +5,4 @@ design/
 pnpm-lock.yaml
 playwright-report/
 test-results/
+worker-configuration.d.ts
