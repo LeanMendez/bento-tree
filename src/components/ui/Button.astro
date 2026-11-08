@@ -45,7 +45,7 @@ const { variant, href, class: className, type = 'button', ...rest } = Astro.prop
     width: var(--hit-min);
     height: var(--hit-min);
     justify-content: center;
-    background: var(--c-ink);
+    background: var(--fg);
     box-shadow: var(--shadow-control);
   }
   .accent {
@@ -60,10 +60,11 @@ const { variant, href, class: className, type = 'button', ...rest } = Astro.prop
   }
   .cta {
     gap: 10px;
-    background: var(--c-yellow);
-    border-color: var(--c-paper);
+    background: var(--cta-btn-bg);
+    color: var(--cta-btn-fg);
+    border-color: var(--cta-fg);
     padding: 0 20px;
-    box-shadow: 4px 4px 0 var(--c-paper);
+    box-shadow: 4px 4px 0 var(--cta-fg);
     font-family: var(--font-sans);
     font-size: 18px;
     min-height: 48px;

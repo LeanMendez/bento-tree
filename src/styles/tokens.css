@@ -38,7 +38,6 @@
   --c-ink: #141414;
   --c-paper: #efebe2;
   --c-surface: #fffdf7;
-  --c-night: #1c1c1a;
   --c-yellow: #ebd99a;
   --c-green: #b9cba8;
   --c-lilac: #c3bed6;
@@ -52,7 +51,18 @@
   --bg: var(--c-paper);
   --fg: var(--c-ink);
   --shadow-color: var(--c-ink);
-  --cta-border: var(--c-ink);
+  /* Texto sobre tinta (chip/idioma seleccionado). */
+  --on-ink: var(--c-paper);
+  /* Borde y separadores de los controles segmentados. */
+  --seg-border: var(--c-ink);
+  --focus-color: var(--c-ink);
+  /* Badge EN VIVO. */
+  --live-color: var(--c-live);
+  /* Tile "¿Tenés un proyecto?" y su botón. */
+  --cta-bg: var(--c-ink);
+  --cta-fg: var(--c-paper);
+  --cta-btn-bg: var(--c-yellow);
+  --cta-btn-fg: var(--c-ink);
 
   /* Tipografía */
   --font-sans: 'Space Grotesk', system-ui, sans-serif;
@@ -77,11 +87,28 @@
   --hit-min: 44px;
 }
 
+/* Dark V2 (Claude Design, hoja "V2 · Dark"): paleta propia, más saturada. */
 .dark {
-  --bg: var(--c-night);
-  --fg: var(--c-paper);
-  --shadow-color: var(--c-paper);
-  --cta-border: var(--c-paper);
+  --c-surface: #f7f1e3;
+  --c-yellow: #f5d76e;
+  --c-green: #a8d88a;
+  --c-lilac: #bba7f4;
+  --c-blue: #8ec5f2;
+  --c-peach: #f6a47c;
+  --c-mint: #7ed9bf;
+  --c-stone: #e6dfcf;
+
+  --bg: #17161a;
+  --fg: #f2eee4;
+  --shadow-color: var(--fg);
+  --on-ink: var(--c-surface);
+  --seg-border: var(--fg);
+  --focus-color: var(--fg);
+  --live-color: var(--c-surface);
+  --cta-bg: var(--c-yellow);
+  --cta-fg: var(--c-ink);
+  --cta-btn-bg: var(--c-ink);
+  --cta-btn-fg: var(--c-yellow);
 }
 
 /*

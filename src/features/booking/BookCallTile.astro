@@ -18,7 +18,7 @@ const { t } = Astro.props;
   </div>
   <div class="row">
     <Button variant="cta" href={site.calendlyUrl} target="_blank" rel="noopener noreferrer" data-calendly>
-      <Icon name="calendar" size={20} strokeWidth={2.4} />
+      <Icon name="calendar" size={20} strokeWidth={2.4} color="var(--cta-btn-fg)" />
       {t.ctaBtn}
     </Button>
   </div>
@@ -37,13 +37,13 @@ const { t } = Astro.props;
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1;
-    color: var(--c-paper);
+    color: var(--cta-fg);
   }
   .sub {
     margin: 8px 0 0;
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--c-paper);
+    color: var(--cta-fg);
   }
   .row {
     display: flex;
