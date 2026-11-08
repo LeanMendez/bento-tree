@@ -1,0 +1,58 @@
+---
+interface Props {
+  /** status: badge verde con punto; count: contador sobre superficie; live: badge EN VIVO. */
+  variant: 'status' | 'count' | 'live';
+}
+const { variant } = Astro.props;
+---
+
+<span class:list={['pill', variant]}>
+  {variant !== 'count' && <span class="dot" />}
+  <slot />
+</span>
+
+<style>
+  .pill {
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .status,
+  .count {
+    border: var(--border-control) solid var(--c-ink);
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c-green);
+    padding: 6px 12px;
+  }
+  .count {
+    background: var(--c-surface);
+    padding: 4px 10px;
+  }
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--c-ink);
+    color: var(--c-live);
+    padding: 4px 9px;
+    border-radius: var(--radius-tag);
+    font-size: 12px;
+  }
+  .dot {
+    display: inline-block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--c-ink);
+  }
+  .live .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--c-live);
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import { LANGS, homePath, type Lang } from '../i18n';
+import { LANG_STORAGE_KEY } from '../features/locale/locale';
+import { THEME_STORAGE_KEY } from '../features/theme/theme';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+}
+const { lang, title, description } = Astro.props;
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+    {LANGS.map((code) => (
+      <link rel="alternate" hreflang={code} href={homePath(code)} />
+    ))}
+    <!-- Antes del primer paint: tema guardado (sin flash) y autodetección de idioma en la primera visita. -->
+    <script
+      is:inline
+      define:vars={{ themeKey: THEME_STORAGE_KEY, langKey: LANG_STORAGE_KEY, lang, enPath: homePath('en') }}
+    >
+      try {
+        if (localStorage.getItem(themeKey) === 'dark') document.documentElement.classList.add('dark');
+        if (lang === 'es' && !localStorage.getItem(langKey) && !/^es\b/i.test(navigator.language)) {
+          location.replace(enPath);
+        }
+      } catch {
+        /* storage bloqueado: tema claro y sin autodetección */
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

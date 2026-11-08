@@ -1,0 +1,124 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+export type TileColor =
+  'surface' | 'green' | 'lilac' | 'blue' | 'yellow' | 'peach' | 'mint' | 'stone' | 'ink';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
+  color: TileColor;
+  /** Columnas en desktop/tablet. */
+  span?: 1 | 2;
+  /** Filas en desktop/tablet (en mobile siempre 1). */
+  rows?: 1 | 2;
+  /** Ocupa 1 columna en mobile aunque `span` sea 2. */
+  mobileSingle?: boolean;
+  /** Categoría para los filtros; sin categoría la tile siempre se ve. */
+  category?: string;
+  /** Con href se renderiza como link; sin href como sección/bloque. */
+  href?: string | null;
+  as?: 'section' | 'div';
+  variant?: 'default' | 'profile';
+  class?: string;
+}
+
+const {
+  color,
+  span = 1,
+  rows = 1,
+  mobileSingle = false,
+  category,
+  href,
+  as = 'div',
+  variant = 'default',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : as;
+const classes = [
+  'tile',
+  `c-${color}`,
+  span === 2 && 's2',
+  rows === 2 && 'r2',
+  mobileSingle && 'm1',
+  variant === 'profile' && 'profile',
+  className,
+];
+---
+
+<Tag class:list={classes} href={href ?? undefined} data-category={category} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .tile {
+    border: var(--border-tile) solid var(--c-ink);
+    border-radius: var(--radius-tile);
+    box-shadow: var(--shadow-tile);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    color: var(--c-ink);
+  }
+  .tile[hidden] {
+    display: none;
+  }
+  .profile {
+    padding: 28px;
+    gap: 20px;
+  }
+  .s2 {
+    grid-column: span 2;
+  }
+  .r2 {
+    grid-row: span 2;
+  }
+  .c-surface {
+    background: var(--c-surface);
+  }
+  .c-green {
+    background: var(--c-green);
+  }
+  .c-lilac {
+    background: var(--c-lilac);
+  }
+  .c-blue {
+    background: var(--c-blue);
+  }
+  .c-yellow {
+    background: var(--c-yellow);
+  }
+  .c-peach {
+    background: var(--c-peach);
+  }
+  .c-mint {
+    background: var(--c-mint);
+  }
+  .c-stone {
+    background: var(--c-stone);
+  }
+  .c-ink {
+    background: var(--c-ink);
+    color: var(--c-paper);
+    border-color: var(--cta-border);
+    gap: 18px;
+  }
+  @media (max-width: 560px) {
+    .tile {
+      padding: 14px;
+      gap: 10px;
+    }
+    .profile {
+      padding: 18px;
+      gap: 14px;
+    }
+    .r2 {
+      grid-row: span 1;
+    }
+    .m1 {
+      grid-column: span 1;
+    }
+  }
+</style>

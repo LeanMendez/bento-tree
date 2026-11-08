@@ -1,0 +1,29 @@
+---
+import Button from '../../components/ui/Button.astro';
+import Icon from '../../components/ui/Icon.astro';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+}
+const { t } = Astro.props;
+---
+
+<Button variant="surface" aria-label={t.shareAria} data-share data-done={t.shared}>
+  <Icon name="share" size={18} />
+  <span class="hide-sm" data-share-label>
+    {t.share}
+  </span>
+</Button>
+
+<script>
+  import { copyText, flashText } from '../../lib/client/clipboard';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-share]');
+  const label = button?.querySelector('[data-share-label]');
+  button?.addEventListener('click', async () => {
+    await copyText(window.location.href);
+    // Igual que el diseño: confirma también si el portapapeles falla.
+    if (label) flashText(label, button.dataset.done ?? '');
+  });
+</script>

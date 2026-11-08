@@ -1,0 +1,36 @@
+---
+import Icon, { type IconName } from '../../components/ui/Icon.astro';
+import IconBox from '../../components/ui/IconBox.astro';
+import Tile, { type TileColor } from '../../components/ui/Tile.astro';
+import TileHead from '../../components/ui/TileHead.astro';
+import TileTitle from '../../components/ui/TileTitle.astro';
+import type { Category } from '../../config/site';
+
+interface Props {
+  href: string;
+  color: TileColor;
+  icon: IconName;
+  title: string;
+  subtitle: string;
+  category: Category;
+}
+const { href, color, icon, title, subtitle, category } = Astro.props;
+---
+
+<Tile href={href} color={color} category={category}>
+  <TileHead>
+    <IconBox icon={icon} />
+    <Icon name="arrow" size={26} />
+  </TileHead>
+  <div>
+    <TileTitle size={26}>{title}</TileTitle>
+    <div class="sub hide-sm">{subtitle}</div>
+  </div>
+</Tile>
+
+<style>
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+</style>

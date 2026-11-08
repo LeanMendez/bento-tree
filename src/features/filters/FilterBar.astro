@@ -1,0 +1,37 @@
+---
+import SegmentedControl from '../../components/ui/SegmentedControl.astro';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+}
+const { t } = Astro.props;
+
+const FILTERS = ['all', 'code', 'social', 'content'] as const;
+const items = FILTERS.map((id) => ({
+  label: t.chips[id],
+  pressed: id === 'all',
+  attrs: { 'data-filter': id },
+}));
+---
+
+<SegmentedControl variant="filters" ariaLabel={t.filterLabel} items={items} />
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const tiles = document.querySelectorAll<HTMLElement>('[data-category]');
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      for (const b of buttons) {
+        const pressed = String(b === button);
+        b.dataset.pressed = pressed;
+        b.setAttribute('aria-pressed', pressed);
+      }
+      for (const tile of tiles) {
+        tile.hidden = filter !== 'all' && tile.dataset.category !== filter;
+      }
+    });
+  }
+</script>

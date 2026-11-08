@@ -1,0 +1,39 @@
+---
+import Button from '../../components/ui/Button.astro';
+import Icon from '../../components/ui/Icon.astro';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+}
+const { t } = Astro.props;
+---
+
+<Button
+  variant="icon"
+  aria-label={t.toDark}
+  data-theme-toggle
+  data-label-to-dark={t.toDark}
+  data-label-to-light={t.toLight}
+>
+  <Icon name="contrast" size={20} color="var(--c-paper)" />
+</Button>
+
+<script>
+  import { isDark, setTheme } from './theme';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  if (button) {
+    const sync = () => {
+      button.setAttribute(
+        'aria-label',
+        (isDark() ? button.dataset.labelToLight : button.dataset.labelToDark) ?? '',
+      );
+    };
+    sync();
+    button.addEventListener('click', () => {
+      setTheme(isDark() ? 'light' : 'dark');
+      sync();
+    });
+  }
+</script>

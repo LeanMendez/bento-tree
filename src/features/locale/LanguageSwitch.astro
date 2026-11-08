@@ -1,0 +1,35 @@
+---
+import SegmentedControl from '../../components/ui/SegmentedControl.astro';
+import { LANGS, homePath, type Lang, type Strings } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+  t: Strings;
+}
+const { lang, t } = Astro.props;
+
+const NAMES: Record<Lang, string> = { es: 'Español', en: 'English' };
+const items = LANGS.map((code) => ({
+  label: code.toUpperCase(),
+  ariaLabel: NAMES[code],
+  pressed: code === lang,
+  href: homePath(code),
+  attrs: { 'data-lang': code, hreflang: code },
+}));
+---
+
+<SegmentedControl variant="lang" ariaLabel={t.langLabel} items={items} />
+
+<script>
+  import { LANG_STORAGE_KEY } from './locale';
+
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-lang]')) {
+    link.addEventListener('click', () => {
+      try {
+        localStorage.setItem(LANG_STORAGE_KEY, link.dataset.lang ?? '');
+      } catch {
+        // Sin storage: la elección vale solo para esta navegación.
+      }
+    });
+  }
+</script>

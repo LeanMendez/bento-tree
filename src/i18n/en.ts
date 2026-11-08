@@ -1,0 +1,33 @@
+import type { Strings } from './index';
+
+export const en: Strings = {
+  htmlLang: 'en',
+  filterLabel: 'Filter links',
+  langLabel: 'Language',
+  chips: { all: 'All', code: 'Code', social: 'Social', content: 'Content' },
+  share: 'Share',
+  shared: 'Link copied!',
+  shareAria: 'Share this page',
+  toLight: 'Switch to light mode',
+  toDark: 'Switch to dark mode',
+  marquee:
+    '4+ years coding ✦ Angular · Next.js · Node · Go ✦ Leading product teams ✦ Building product in fintech ✦',
+  freelance: 'Open to freelance',
+  bio: 'I lead teams, write programming guides and automate anything I have to do more than twice.',
+  copy: 'Copy email',
+  copied: 'Email copied!',
+  featuredRepo: 'Featured repo',
+  repoDesc: 'Bitbucket Cloud CLI for AI agents: PR status, diffs, checks and ClickUp tasks.',
+  live: 'LIVE',
+  liveNote: 'Live now · come hang out',
+  guides: 'Programming guides',
+  guidesCount: (n: number) => `${n} guides`,
+  blogAria: 'Blog: see all posts',
+  seeAll: 'See all',
+  latestPost: 'Latest post:',
+  ctaTitle: 'Got a project?',
+  ctaSub: 'Tell me about your idea in a quick 20-minute call.',
+  ctaBtn: 'Book a call',
+  playlist: 'My Spotify playlist',
+  title: (name: string) => `${name} · links`,
+};

@@ -1,0 +1,48 @@
+---
+interface Props {
+  brand: string;
+}
+const { brand } = Astro.props;
+---
+
+<header class="hdr">
+  <span class="brand">{brand}</span>
+  <slot name="center" />
+  <div class="tools">
+    <slot name="tools" />
+  </div>
+</header>
+
+<style>
+  .hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 6px 12px;
+    border-radius: var(--radius-tag);
+  }
+  .tools {
+    display: flex;
+    gap: 8px;
+  }
+  @media (max-width: 560px) {
+    .brand {
+      order: 0;
+    }
+    .tools {
+      order: 1;
+      margin-left: auto;
+    }
+  }
+</style>

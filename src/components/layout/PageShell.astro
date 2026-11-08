@@ -1,0 +1,30 @@
+<main class="root">
+  <div class="wrap">
+    <slot />
+  </div>
+</main>
+
+<style>
+  .root {
+    min-height: 100vh;
+    padding: 48px 16px 40px;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+  }
+  .wrap {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  @media (max-width: 560px) {
+    .root {
+      padding: 20px 16px;
+    }
+    .wrap {
+      gap: 16px;
+    }
+  }
+</style>

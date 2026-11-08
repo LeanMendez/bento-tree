@@ -1,0 +1,53 @@
+---
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    {[0, 1, 2, 3].map(() => (
+      <span>{text}</span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    border: var(--border-tile) solid var(--c-ink);
+    border-radius: var(--radius-control);
+    background: var(--c-yellow);
+    color: var(--c-ink);
+    box-shadow: var(--shadow-marquee);
+    padding: 10px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .track {
+    display: flex;
+    width: max-content;
+    animation: mq 30s linear infinite;
+  }
+  .track span {
+    padding-right: 32px;
+    white-space: nowrap;
+  }
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+  @keyframes mq {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      animation: none;
+    }
+  }
+</style>

@@ -1,18 +1,7 @@
 ---
-import { PUBLIC_OWNER_NAME } from 'astro:env/server';
-import '../styles/global.css';
+import HomePage from '../features/home/HomePage.astro';
 
 export const prerender = true;
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{PUBLIC_OWNER_NAME} · links</title>
-  </head>
-  <body>
-    <main>{PUBLIC_OWNER_NAME}</main>
-  </body>
-</html>
+<HomePage lang="es" />
