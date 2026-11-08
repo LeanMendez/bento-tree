@@ -1,0 +1,14 @@
+---
+import { site } from '../../config/site';
+import LatestPost from './LatestPost.astro';
+import { getLatestPost } from './rss.service';
+
+/** Server island: título del último post del RSS; si falla, el mismo fallback que la página estática. */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+const post = await getLatestPost(site.blog.rssUrl);
+---
+
+<LatestPost label={label} title={post?.title ?? site.blog.fallbackLatestTitle} />
