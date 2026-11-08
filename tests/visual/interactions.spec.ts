@@ -58,3 +58,14 @@ test.describe('idioma', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   });
 });
+
+test('links externos abren en pestaña nueva, seguros y anunciados; ES/EN no', async ({ page }) => {
+  await page.goto('/');
+  for (const name of [/LinkedIn/, /Twitch/, /^X/, /Portfolio/, /Blog/, /Spotify/]) {
+    const link = page.getByRole('link', { name });
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(link).toHaveAccessibleName(/se abre en una pestaña nueva/);
+  }
+  await expect(page.getByRole('link', { name: 'English' })).not.toHaveAttribute('target', /.*/);
+});

@@ -26,6 +26,7 @@ export const es = {
   ctaTitle: '¿Tenés un proyecto?',
   ctaSub: 'Contame tu idea en una llamada corta de 20 minutos.',
   ctaBtn: 'Agendemos una llamada',
+  newTab: 'se abre en una pestaña nueva',
   playlist: 'Mi playlist en Spotify',
   title: (name: string) => `${name} · links`,
 };

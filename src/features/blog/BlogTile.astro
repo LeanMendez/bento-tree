@@ -16,7 +16,15 @@ const { t } = Astro.props;
 const { blog } = site;
 ---
 
-<Tile href={blog.url} color="peach" span={2} mobileSingle category="content" aria-label={t.blogAria}>
+<Tile
+  href={blog.url}
+  newTabLabel={t.newTab}
+  color="peach"
+  span={2}
+  mobileSingle
+  category="content"
+  aria-label={t.blogAria}
+>
   <TileHead>
     <IconBox icon="pen" />
     <span class="see-all">

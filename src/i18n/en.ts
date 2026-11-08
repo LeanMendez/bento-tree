@@ -28,6 +28,7 @@ export const en: Strings = {
   ctaTitle: 'Got a project?',
   ctaSub: 'Tell me about your idea in a quick 20-minute call.',
   ctaBtn: 'Book a call',
+  newTab: 'opens in a new tab',
   playlist: 'My Spotify playlist',
   title: (name: string) => `${name} · links`,
 };
