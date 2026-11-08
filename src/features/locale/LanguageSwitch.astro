@@ -1,6 +1,7 @@
 ---
 import SegmentedControl from '../../components/ui/SegmentedControl.astro';
 import { LANGS, homePath, type Lang, type Strings } from '../../i18n';
+import { LANG_STORAGE_KEY } from './locale';
 
 interface Props {
   lang: Lang;
@@ -20,13 +21,13 @@ const items = LANGS.map((code) => ({
 
 <SegmentedControl variant="lang" ariaLabel={t.langLabel} items={items} />
 
-<script>
-  import { LANG_STORAGE_KEY } from './locale';
-
-  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-lang]')) {
+<!-- Inline: el listener existe apenas se parsea el selector, antes de que el usuario pueda clickear
+     (con un módulo diferido, un click temprano no guardaba la elección). -->
+<script is:inline define:vars={{ langKey: LANG_STORAGE_KEY }}>
+  for (const link of document.querySelectorAll('[data-lang]')) {
     link.addEventListener('click', () => {
       try {
-        localStorage.setItem(LANG_STORAGE_KEY, link.dataset.lang ?? '');
+        localStorage.setItem(langKey, link.dataset.lang ?? '');
       } catch {
         // Sin storage: la elección vale solo para esta navegación.
       }

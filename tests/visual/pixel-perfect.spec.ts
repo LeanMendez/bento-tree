@@ -19,6 +19,8 @@ const TO_DARK: Record<Lang, string> = { es: 'Cambiar a modo oscuro', en: 'Switch
 test.skip(!hasReference, 'design/reference.html no está (export local de Claude Design)');
 
 async function openApp(page: Page, lang: Lang, theme: Theme): Promise<void> {
+  // Islands bloqueadas: se compara el fallback (= valores del diseño), no datos en vivo.
+  await page.route('**/_server-islands/**', (route) => route.abort());
   await page.goto(PATH[lang]);
   await page.evaluate(() => document.fonts.ready);
   if (theme === 'dark') {
