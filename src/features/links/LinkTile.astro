@@ -13,11 +13,12 @@ interface Props {
   title: string;
   subtitle: string;
   category: Category;
+  newTabLabel: string;
 }
-const { href, color, icon, title, subtitle, category } = Astro.props;
+const { href, color, icon, title, subtitle, category, newTabLabel } = Astro.props;
 ---
 
-<Tile href={href} color={color} category={category}>
+<Tile href={href} newTabLabel={newTabLabel} color={color} category={category}>
   <TileHead>
     <IconBox icon={icon} />
     <Icon name="arrow" size={26} />

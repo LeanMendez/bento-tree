@@ -10,11 +10,19 @@ interface Props {
   playlist?: PlaylistData | null;
 }
 const { lang, playlist } = Astro.props;
+const t = getStrings(lang);
 ---
 
-<a class="playlist" href={playlist?.url ?? site.spotify.defaultPlaylistUrl} title={playlist?.name}>
+<a
+  class="playlist"
+  href={playlist?.url ?? site.spotify.defaultPlaylistUrl}
+  title={playlist?.name}
+  target="_blank"
+  rel="noopener noreferrer"
+>
   <Icon name="headphones" size={18} />
-  <span class="name">{playlist?.name ?? getStrings(lang).playlist}</span>
+  <span class="name">{playlist?.name ?? t.playlist}</span>
+  <span class="sr-only"> ({t.newTab})</span>
 </a>
 
 <style>

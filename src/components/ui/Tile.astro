@@ -18,6 +18,8 @@ interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
   href?: string | null;
   as?: 'section' | 'div';
   variant?: 'default' | 'profile';
+  /** Con href: abre en pestaña nueva y anuncia este texto a lectores de pantalla. */
+  newTabLabel?: string;
   class?: string;
 }
 
@@ -31,10 +33,20 @@ const {
   as = 'div',
   variant = 'default',
   class: className,
+  newTabLabel,
   ...rest
 } = Astro.props;
 
 const Tag = href ? 'a' : as;
+const newTab = href && newTabLabel;
+const ariaLabel = rest['aria-label'];
+const linkAttrs = newTab
+  ? {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      ...(ariaLabel ? { 'aria-label': `${ariaLabel} (${newTabLabel})` } : {}),
+    }
+  : {};
 const classes = [
   'tile',
   `c-${color}`,
@@ -46,8 +58,9 @@ const classes = [
 ];
 ---
 
-<Tag class:list={classes} href={href ?? undefined} data-category={category} {...rest}>
+<Tag class:list={classes} href={href ?? undefined} data-category={category} {...rest} {...linkAttrs}>
   <slot />
+  {newTab && !ariaLabel && <span class="sr-only"> ({newTabLabel})</span>}
 </Tag>
 
 <style>

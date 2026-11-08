@@ -15,7 +15,7 @@ const lang = LANGS.find((l) => getStrings(l) === t) ?? 'es';
 const { featured, profileLabel } = site.github;
 ---
 
-<Tile href={featured.url} color="green" span={2} mobileSingle category="code">
+<Tile href={featured.url} newTabLabel={t.newTab} color="green" span={2} mobileSingle category="code">
   <TileHead gap={12}>
     <IconBox icon="code" />
     <span class="kicker hide-sm">{t.featuredRepo}</span>

@@ -14,7 +14,7 @@ const { t } = Astro.props;
 const { twitch } = site;
 ---
 
-<Tile href={twitch.url} color="lilac" category="content">
+<Tile href={twitch.url} newTabLabel={t.newTab} color="lilac" category="content">
   <TileHead gap={8}>
     <IconBox icon="tv" />
     {/* Estado offline = diseño. El poller inserta el pill antes del template cuando el canal está en vivo. */}

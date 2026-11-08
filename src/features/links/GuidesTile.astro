@@ -15,7 +15,7 @@ const { t } = Astro.props;
 const { guides } = site;
 ---
 
-<Tile href={guides.url} color="yellow" span={2} category="code">
+<Tile href={guides.url} newTabLabel={t.newTab} color="yellow" span={2} category="code">
   <TileHead>
     <IconBox icon="book" />
     <Pill variant="count">{t.guidesCount(guides.count)}</Pill>
