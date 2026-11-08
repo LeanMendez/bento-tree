@@ -47,7 +47,7 @@ for (const board of ARTBOARDS) {
             deviceScaleFactor: 1,
           });
           const refPage = await refContext.newPage();
-          await openReference(refPage, lang, theme);
+          await openReference(refPage, theme);
           const expected = await screenshot(refPage);
           await refContext.close();
 
@@ -91,35 +91,37 @@ const STATES: { name: string; act: (page: Page, lang: Lang) => Promise<void> }[]
 for (const board of [ARTBOARDS[0], ARTBOARDS[2]]) {
   for (const lang of LANGS) {
     for (const state of STATES) {
-      test.describe(`${board.name} ${lang} ${state.name}`, () => {
-        test.use({
-          viewport: { width: board.width, height: board.height },
-          locale: LOCALE[lang],
-          reducedMotion: 'reduce',
-        });
-
-        test('coincide con el diseño', async ({ page, browser }) => {
-          const refContext = await browser.newContext({
+      for (const theme of THEMES) {
+        test.describe(`${board.name} ${lang} ${theme} ${state.name}`, () => {
+          test.use({
             viewport: { width: board.width, height: board.height },
             locale: LOCALE[lang],
             reducedMotion: 'reduce',
-            deviceScaleFactor: 1,
           });
-          const refPage = await refContext.newPage();
-          await openReference(refPage, lang, 'light');
-          await state.act(refPage, lang);
-          const expected = await screenshot(refPage);
-          await refContext.close();
 
-          await openApp(page, lang, 'light');
-          await state.act(page, lang);
-          const actual = await screenshot(page);
+          test('coincide con el diseño', async ({ page, browser }) => {
+            const refContext = await browser.newContext({
+              viewport: { width: board.width, height: board.height },
+              locale: LOCALE[lang],
+              reducedMotion: 'reduce',
+              deviceScaleFactor: 1,
+            });
+            const refPage = await refContext.newPage();
+            await openReference(refPage, theme);
+            await state.act(refPage, lang);
+            const expected = await screenshot(refPage);
+            await refContext.close();
 
-          const result = diffImages(actual, expected);
-          expect(result.sizeMismatch, 'tamaño de página distinto al diseño').toBe(false);
-          expect(result.ratio).toBeLessThanOrEqual(MAX_DIFF_RATIO);
+            await openApp(page, lang, theme);
+            await state.act(page, lang);
+            const actual = await screenshot(page);
+
+            const result = diffImages(actual, expected);
+            expect(result.sizeMismatch, 'tamaño de página distinto al diseño').toBe(false);
+            expect(result.ratio).toBeLessThanOrEqual(MAX_DIFF_RATIO);
+          });
         });
-      });
+      }
     }
   }
 }

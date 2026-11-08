@@ -17,26 +17,21 @@ export type Theme = 'light' | 'dark';
 
 /** Export local de Claude Design; fuera de git porque contiene datos personales. */
 export const REFERENCE_PATH = fileURLToPath(new URL('../../design/reference.html', import.meta.url));
-export const hasReference = existsSync(REFERENCE_PATH);
+/** Hoja "V2 · Dark" (abre en oscuro por defecto). */
+export const REFERENCE_DARK_PATH = fileURLToPath(
+  new URL('../../design/reference-dark.html', import.meta.url),
+);
+export const hasReference = existsSync(REFERENCE_PATH) && existsSync(REFERENCE_DARK_PATH);
 
 /** Locale de navegador que hace que el diseño autodetecte cada idioma. */
 export const LOCALE: Record<Lang, string> = { es: 'es-AR', en: 'en-US' };
 
-const THEME_TOGGLE_LABEL: Record<Lang, string> = {
-  es: 'Cambiar a modo oscuro',
-  en: 'Switch to dark mode',
-};
-
 /** Abre el diseño de referencia en el idioma/tema pedidos. El idioma sale del locale del contexto. */
-export async function openReference(page: Page, lang: Lang, theme: Theme): Promise<void> {
-  await page.goto(`file://${REFERENCE_PATH}`);
+export async function openReference(page: Page, theme: Theme): Promise<void> {
+  await page.goto(`file://${theme === 'dark' ? REFERENCE_DARK_PATH : REFERENCE_PATH}`);
   // El bundle se desempaqueta en runtime: esperar al contenido real, no al loader.
   await page.locator('main.root').waitFor();
   await page.evaluate(() => document.fonts.ready);
-  if (theme === 'dark') {
-    await page.getByRole('button', { name: THEME_TOGGLE_LABEL[lang] }).click();
-    await page.mouse.move(0, 0);
-  }
 }
 
 export async function screenshot(page: Page): Promise<Buffer> {

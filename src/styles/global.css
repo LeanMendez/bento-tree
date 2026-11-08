@@ -59,7 +59,7 @@ a.tile:active,
 a.tile:focus-visible,
 .press:focus-visible,
 input:focus-visible {
-  outline: 3px dashed var(--c-ink);
+  outline: 3px dashed var(--focus-color);
   outline-offset: 4px;
 }
 

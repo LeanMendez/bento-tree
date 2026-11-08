@@ -52,7 +52,7 @@ const { items, ariaLabel, variant, class: className } = Astro.props;
   .seg {
     display: flex;
     flex-wrap: nowrap;
-    border: var(--border-control) solid var(--c-ink);
+    border: var(--border-control) solid var(--seg-border);
     overflow: hidden;
     box-shadow: var(--shadow-control);
     font-family: var(--font-mono);
@@ -77,11 +77,11 @@ const { items, ariaLabel, variant, class: className } = Astro.props;
     transition: background 0.12s ease;
   }
   .item + .item {
-    border-left: var(--border-control) solid var(--c-ink);
+    border-left: var(--border-control) solid var(--seg-border);
   }
   .item[data-pressed='true'] {
     background: var(--c-ink);
-    color: var(--c-paper);
+    color: var(--on-ink);
   }
   .item[data-pressed='false']:hover {
     background: var(--c-yellow);
