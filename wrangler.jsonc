@@ -4,7 +4,7 @@
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
   "kv_namespaces": [
-    // Estado persistente de Spotify (última playlist propia). Se provisiona en F3 (deploy).
-    { "binding": "BENTO_KV" },
+    // Estado persistente de Spotify (última playlist propia). ID del namespace (no es dato personal).
+    { "binding": "BENTO_KV", "id": "bb59310989cb4ad2b9a5f6d6a25c856f" },
   ],
 }
