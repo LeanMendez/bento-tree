@@ -17,12 +17,18 @@ const { t } = Astro.props;
     <p class="sub hide-sm">{t.ctaSub}</p>
   </div>
   <div class="row">
-    <Button variant="cta" href={site.calendlyUrl} target="_blank" rel="noopener noreferrer">
+    <Button variant="cta" href={site.calendlyUrl} target="_blank" rel="noopener noreferrer" data-calendly>
       <Icon name="calendar" size={20} strokeWidth={2.4} />
       {t.ctaBtn}
     </Button>
   </div>
 </Tile>
+
+<script>
+  import { bindCalendly } from './calendly';
+
+  bindCalendly();
+</script>
 
 <style>
   .title {
