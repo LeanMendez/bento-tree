@@ -7,7 +7,6 @@ import {
   PUBLIC_GUIDES_URL,
   PUBLIC_LINKEDIN_URL,
   PUBLIC_OWNER_EMAIL,
-  PUBLIC_OWNER_INITIALS,
   PUBLIC_OWNER_NAME,
   PUBLIC_OWNER_ROLE,
   PUBLIC_PORTFOLIO_URL,
@@ -31,7 +30,6 @@ function lastPathSegment(url: string): string {
 export const site = {
   owner: {
     name: PUBLIC_OWNER_NAME,
-    initials: PUBLIC_OWNER_INITIALS,
     role: PUBLIC_OWNER_ROLE,
     email: PUBLIC_OWNER_EMAIL,
   },

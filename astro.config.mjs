@@ -25,7 +25,6 @@ export default defineConfig({
     schema: {
       // Datos personales: nunca en el repo (ver PLAN.md §2 "Datos personales y secrets").
       PUBLIC_OWNER_NAME: publicString(),
-      PUBLIC_OWNER_INITIALS: publicString(),
       PUBLIC_OWNER_ROLE: publicString(),
       PUBLIC_OWNER_EMAIL: envField.string({ context: 'server', access: 'public', includes: '@' }),
       PUBLIC_GITHUB_USER: publicString(),

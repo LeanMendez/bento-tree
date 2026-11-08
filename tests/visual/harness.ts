@@ -34,8 +34,14 @@ export async function openReference(page: Page, theme: Theme): Promise<void> {
   await page.evaluate(() => document.fonts.ready);
 }
 
+/** El avatar es una foto propia (el diseño usa iniciales): se enmascara igual en ambas capturas. */
 export async function screenshot(page: Page): Promise<Buffer> {
-  return page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
+  return page.screenshot({
+    fullPage: true,
+    animations: 'disabled',
+    caret: 'hide',
+    mask: [page.locator('.avatar')],
+  });
 }
 
 export interface DiffResult {
