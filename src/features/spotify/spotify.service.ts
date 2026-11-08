@@ -98,7 +98,7 @@ function createApi(accessToken: string) {
           );
           return {
             id,
-            name: playlist.name ?? '',
+            name: (playlist.name ?? '').trim(),
             url: playlist.external_urls?.spotify ?? `https://open.spotify.com/playlist/${id}`,
             owner: playlist.owner?.id ?? null,
           };

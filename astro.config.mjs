@@ -12,6 +12,8 @@ const secret = () => envField.string({ context: 'server', access: 'secret', opti
 export default defineConfig({
   // Sin imágenes rasterizadas en el diseño: evita provisionar el binding IMAGES.
   adapter: cloudflare({ imageService: 'passthrough' }),
+  // Sin sesiones: evita que el adapter provisione un KV SESSION que no usamos.
+  session: false,
   // La barra de dev se superpone a la página y rompe la comparación pixel perfect.
   devToolbar: { enabled: false },
   i18n: {
