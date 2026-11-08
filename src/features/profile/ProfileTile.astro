@@ -3,6 +3,7 @@ import Button from '../../components/ui/Button.astro';
 import Icon from '../../components/ui/Icon.astro';
 import Pill from '../../components/ui/Pill.astro';
 import Tile from '../../components/ui/Tile.astro';
+import avatar from '../../assets/avatar.webp';
 import { site } from '../../config/site';
 import type { Strings } from '../../i18n';
 
@@ -15,7 +16,9 @@ const { owner } = site;
 
 <Tile as="section" color="surface" span={2} rows={2} variant="profile">
   <div class="top">
-    <div class="avatar">{owner.initials}</div>
+    <div class="avatar">
+      <img src={avatar.src} width="98" height="98" alt={owner.name} decoding="async" />
+    </div>
     <Pill variant="status">{t.freelance}</Pill>
   </div>
   <div class="intro">
@@ -50,7 +53,14 @@ const { owner } = site;
     gap: 12px;
     flex-wrap: wrap;
   }
+  .avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .avatar {
+    overflow: hidden;
     width: 104px;
     height: 104px;
     border: var(--border-tile) solid var(--c-ink);
