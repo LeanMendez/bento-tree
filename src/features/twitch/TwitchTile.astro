@@ -9,23 +9,53 @@ import type { Strings } from '../../i18n';
 
 interface Props {
   t: Strings;
-  /** Estado en vivo; la detección real llega en F2d. */
-  live?: boolean;
 }
-const { t, live = false } = Astro.props;
+const { t } = Astro.props;
 const { twitch } = site;
 ---
 
 <Tile href={twitch.url} color="lilac" category="content">
   <TileHead gap={8}>
     <IconBox icon="tv" />
-    {live && <Pill variant="live">{t.live}</Pill>}
+    {/* Estado offline = diseño. El poller inserta el pill antes del template cuando el canal está en vivo. */}
+    <template data-twitch-live-pill>
+      <Pill variant="live">{t.live}</Pill>
+    </template>
   </TileHead>
   <div>
     <TileTitle size={26}>Twitch</TileTitle>
-    <div class="sub hide-sm">{live ? t.liveNote : twitch.label}</div>
+    <div class="sub hide-sm" data-twitch-note data-live-note={t.liveNote} data-offline-note={twitch.label}>
+      {twitch.label}
+    </div>
   </div>
 </Tile>
+
+<script>
+  import { fetchLiveFromApi, startLivePoller } from './live-poller';
+
+  const pillTemplate = document.querySelector<HTMLTemplateElement>('template[data-twitch-live-pill]');
+  const note = document.querySelector<HTMLElement>('[data-twitch-note]');
+
+  if (pillTemplate && note) {
+    let pill: HTMLElement | null = null;
+    startLivePoller({
+      fetchLive: () => fetchLiveFromApi(),
+      visibility: document,
+      onStatus: (live) => {
+        if (live && !pill) {
+          pill = (pillTemplate.content.cloneNode(true) as DocumentFragment).querySelector<HTMLElement>(
+            '.pill',
+          );
+          if (pill) pillTemplate.parentNode?.insertBefore(pill, pillTemplate);
+        } else if (!live && pill) {
+          pill.remove();
+          pill = null;
+        }
+        note.textContent = (live ? note.dataset.liveNote : note.dataset.offlineNote) ?? '';
+      },
+    });
+  }
+</script>
 
 <style>
   .sub {
