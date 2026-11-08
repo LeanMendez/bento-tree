@@ -1,0 +1,20 @@
+---
+import { site } from '../../config/site';
+import { getStrings, type Lang } from '../../i18n';
+import RepoContent from './RepoContent.astro';
+import { getFeaturedRepo } from './github.service';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { user, featured, profileLabel } = site.github;
+const repo = await getFeaturedRepo(user, featured.name);
+---
+
+<RepoContent
+  name={repo?.name ?? featured.name}
+  description={repo?.description ?? getStrings(lang).repoDesc}
+  tags={repo?.tags ?? featured.tags}
+  owner={profileLabel}
+/>

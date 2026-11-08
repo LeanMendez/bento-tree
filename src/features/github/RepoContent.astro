@@ -1,0 +1,41 @@
+---
+import Tag from '../../components/ui/Tag.astro';
+import TileTitle from '../../components/ui/TileTitle.astro';
+
+interface Props {
+  name: string;
+  description: string;
+  tags: readonly string[];
+  owner: string;
+}
+const { name, description, tags, owner } = Astro.props;
+---
+
+<div>
+  <TileTitle size={28}>{name}</TileTitle>
+  <div class="desc hide-sm">{description}</div>
+  <div class="meta hide-sm">
+    {tags.map((tag) => (
+      <Tag>{tag}</Tag>
+    ))}
+    <span class="owner">{owner}</span>
+  </div>
+</div>
+
+<style>
+  .desc {
+    font-size: 15px;
+    margin-top: 6px;
+  }
+  .meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .owner {
+    padding: 4px 0;
+  }
+</style>

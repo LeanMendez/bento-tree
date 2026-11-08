@@ -1,16 +1,17 @@
 ---
 import IconBox from '../../components/ui/IconBox.astro';
-import Tag from '../../components/ui/Tag.astro';
 import Tile from '../../components/ui/Tile.astro';
 import TileHead from '../../components/ui/TileHead.astro';
-import TileTitle from '../../components/ui/TileTitle.astro';
 import { site } from '../../config/site';
-import type { Strings } from '../../i18n';
+import { getStrings, LANGS, type Strings } from '../../i18n';
+import FeaturedRepoContent from './FeaturedRepoContent.astro';
+import RepoContent from './RepoContent.astro';
 
 interface Props {
   t: Strings;
 }
 const { t } = Astro.props;
+const lang = LANGS.find((l) => getStrings(l) === t) ?? 'es';
 const { featured, profileLabel } = site.github;
 ---
 
@@ -19,16 +20,15 @@ const { featured, profileLabel } = site.github;
     <IconBox icon="code" />
     <span class="kicker hide-sm">{t.featuredRepo}</span>
   </TileHead>
-  <div>
-    <TileTitle size={28}>{featured.name}</TileTitle>
-    <div class="desc hide-sm">{t.repoDesc}</div>
-    <div class="meta hide-sm">
-      {featured.tags.map((tag) => (
-        <Tag>{tag}</Tag>
-      ))}
-      <span class="owner">{profileLabel}</span>
-    </div>
-  </div>
+  <FeaturedRepoContent server:defer lang={lang}>
+    <RepoContent
+      slot="fallback"
+      name={featured.name}
+      description={t.repoDesc}
+      tags={featured.tags}
+      owner={profileLabel}
+    />
+  </FeaturedRepoContent>
 </Tile>
 
 <style>
@@ -38,20 +38,5 @@ const { featured, profileLabel } = site.github;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-  }
-  .desc {
-    font-size: 15px;
-    margin-top: 6px;
-  }
-  .meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-  }
-  .owner {
-    padding: 4px 0;
   }
 </style>
