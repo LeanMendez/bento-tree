@@ -49,3 +49,10 @@ input:focus-visible {
   outline: 3px dashed var(--c-ink);
   outline-offset: 4px;
 }
+
+@media (max-width: 560px) {
+  /* Diseño: .bio, .sub y .hide-sm se ocultan en mobile. */
+  .hide-sm {
+    display: none !important;
+  }
+}

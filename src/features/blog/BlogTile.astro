@@ -1,0 +1,54 @@
+---
+import Icon from '../../components/ui/Icon.astro';
+import IconBox from '../../components/ui/IconBox.astro';
+import Tile from '../../components/ui/Tile.astro';
+import TileHead from '../../components/ui/TileHead.astro';
+import TileTitle from '../../components/ui/TileTitle.astro';
+import { site } from '../../config/site';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+}
+const { t } = Astro.props;
+const { blog } = site;
+---
+
+<Tile href={blog.url} color="peach" span={2} mobileSingle category="content" aria-label={t.blogAria}>
+  <TileHead>
+    <IconBox icon="pen" />
+    <span class="see-all">
+      <span class="hide-sm">{t.seeAll}</span>
+      <Icon name="arrow" size={26} />
+    </span>
+  </TileHead>
+  <div>
+    <TileTitle size={30}>Blog</TileTitle>
+    <p class="latest hide-sm">
+      <span class="label">{t.latestPost}</span> {blog.fallbackLatestTitle}
+    </p>
+  </div>
+</Tile>
+
+<style>
+  .see-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .latest {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+export interface SegmentItem {
+  label: string;
+  pressed: boolean;
+  /** Con href el ítem es un link; si no, un botón. */
+  href?: string;
+  ariaLabel?: string;
+  /** Atributos extra (data-*) para el script de la feature. */
+  attrs?: Record<string, string>;
+}
+
+interface Props {
+  items: SegmentItem[];
+  ariaLabel: string;
+  /** filters: chips de filtro (se expanden en mobile); lang: selector compacto. */
+  variant: 'filters' | 'lang';
+  class?: string;
+}
+
+const { items, ariaLabel, variant, class: className } = Astro.props;
+---
+
+<div class:list={['seg', variant, className]} role="group" aria-label={ariaLabel}>
+  {items.map((item) =>
+    item.href ? (
+      <a
+        class="press item"
+        href={item.href}
+        aria-label={item.ariaLabel}
+        aria-current={item.pressed ? 'true' : undefined}
+        data-pressed={String(item.pressed)}
+        {...item.attrs}
+      >
+        {item.label}
+      </a>
+    ) : (
+      <button
+        class="press item"
+        type="button"
+        aria-label={item.ariaLabel}
+        aria-pressed={item.pressed}
+        data-pressed={String(item.pressed)}
+        {...item.attrs}
+      >
+        {item.label}
+      </button>
+    ),
+  )}
+</div>
+
+<style>
+  .seg {
+    display: flex;
+    flex-wrap: nowrap;
+    border: var(--border-control) solid var(--c-ink);
+    overflow: hidden;
+    box-shadow: var(--shadow-control);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .filters {
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  .lang {
+    border-radius: var(--radius-control);
+    font-size: 13px;
+  }
+  .item {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: var(--hit-min);
+    background: var(--c-surface);
+    color: var(--c-ink);
+    font: inherit;
+    transition: background 0.12s ease;
+  }
+  .item + .item {
+    border-left: var(--border-control) solid var(--c-ink);
+  }
+  .item[data-pressed='true'] {
+    background: var(--c-ink);
+    color: var(--c-paper);
+  }
+  .item[data-pressed='false']:hover {
+    background: var(--c-yellow);
+  }
+  .seg .item:hover,
+  .seg .item:active {
+    transform: none;
+  }
+  .seg .item:focus-visible {
+    outline-offset: -6px;
+  }
+  .filters .item {
+    padding: 0 16px;
+    white-space: nowrap;
+  }
+  .lang .item {
+    min-width: var(--hit-min);
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 560px) {
+    .filters {
+      order: 2;
+      width: 100%;
+    }
+    .filters .item {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0 4px;
+      font-size: 12px;
+    }
+  }
+</style>

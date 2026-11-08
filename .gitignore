@@ -11,4 +11,4 @@ test-results/
 playwright-report/
 .directory
 .DS_Store
-design/
+design

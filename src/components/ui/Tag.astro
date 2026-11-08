@@ -1,0 +1,24 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+}
+const { size = 'sm' } = Astro.props;
+---
+
+<span class:list={['tag', size]}>
+  <slot />
+</span>
+
+<style>
+  .tag {
+    border: var(--border-control) solid var(--c-ink);
+    border-radius: var(--radius-tag);
+    background: var(--c-surface);
+  }
+  .sm {
+    padding: 2px 9px;
+  }
+  .md {
+    padding: 3px 10px;
+  }
+</style>

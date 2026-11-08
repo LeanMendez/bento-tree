@@ -1,0 +1,102 @@
+---
+import Button from '../../components/ui/Button.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Pill from '../../components/ui/Pill.astro';
+import Tile from '../../components/ui/Tile.astro';
+import { site } from '../../config/site';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+}
+const { t } = Astro.props;
+const { owner } = site;
+---
+
+<Tile as="section" color="surface" span={2} rows={2} variant="profile">
+  <div class="top">
+    <div class="avatar">{owner.initials}</div>
+    <Pill variant="status">{t.freelance}</Pill>
+  </div>
+  <div class="intro">
+    <h1 class="name">{owner.name}</h1>
+    <p class="role">{owner.role}</p>
+    <p class="bio">{t.bio}</p>
+  </div>
+  <Button variant="accent" data-copy-email={owner.email} data-done={t.copied}>
+    <Icon name="copy" size={18} />
+    <span data-copy-label>{t.copy}</span>
+  </Button>
+</Tile>
+
+<script>
+  import { copyText, flashText } from '../../lib/client/clipboard';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const label = button?.querySelector('[data-copy-label]');
+  button?.addEventListener('click', async () => {
+    const email = button.dataset.copyEmail ?? '';
+    const ok = await copyText(email);
+    // Si el portapapeles falla se muestra el email para copiarlo a mano (diseño).
+    if (label) flashText(label, ok ? (button.dataset.done ?? '') : email);
+  });
+</script>
+
+<style>
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .avatar {
+    width: 104px;
+    height: 104px;
+    border: var(--border-tile) solid var(--c-ink);
+    border-radius: var(--radius-tile);
+    background: var(--c-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .name {
+    margin: 0;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+  .role {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .bio {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.45;
+    max-width: 44ch;
+  }
+  @media (max-width: 560px) {
+    .avatar {
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+    }
+    .name {
+      font-size: 34px;
+    }
+    .bio {
+      display: none;
+    }
+  }
+</style>

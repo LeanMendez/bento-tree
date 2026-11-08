@@ -1,0 +1,37 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  icon: IconName;
+}
+const { icon } = Astro.props;
+---
+
+<span class="icon-box">
+  <Icon name={icon} />
+</span>
+
+<style>
+  .icon-box {
+    /* content-box como el diseño: 48px + borde = 52px. */
+    box-sizing: content-box;
+    width: 48px;
+    height: 48px;
+    border: var(--border-control) solid var(--c-ink);
+    border-radius: var(--radius-control);
+    background: var(--c-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 560px) {
+    .icon-box {
+      width: 38px;
+      height: 38px;
+    }
+    .icon-box :global(svg) {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>

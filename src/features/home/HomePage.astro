@@ -1,0 +1,80 @@
+---
+import BentoGrid from '../../components/layout/BentoGrid.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Marquee from '../../components/layout/Marquee.astro';
+import PageShell from '../../components/layout/PageShell.astro';
+import { site } from '../../config/site';
+import { getStrings, type Lang } from '../../i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogTile from '../blog/BlogTile.astro';
+import BookCallTile from '../booking/BookCallTile.astro';
+import FilterBar from '../filters/FilterBar.astro';
+import FeaturedRepoTile from '../github/FeaturedRepoTile.astro';
+import GuidesTile from '../links/GuidesTile.astro';
+import LinkTile from '../links/LinkTile.astro';
+import LanguageSwitch from '../locale/LanguageSwitch.astro';
+import ProfileTile from '../profile/ProfileTile.astro';
+import ShareButton from '../share/ShareButton.astro';
+import PlaylistLink from '../spotify/PlaylistLink.astro';
+import ThemeToggle from '../theme/ThemeToggle.astro';
+import TwitchTile from '../twitch/TwitchTile.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getStrings(lang);
+---
+
+<BaseLayout lang={lang} title={t.title(site.owner.name)} description={t.bio}>
+  <PageShell>
+    <Header brand="~/links">
+      <FilterBar slot="center" t={t} />
+      <Fragment slot="tools">
+        <LanguageSwitch lang={lang} t={t} />
+        <ShareButton t={t} />
+        <ThemeToggle t={t} />
+      </Fragment>
+    </Header>
+
+    <Marquee text={t.marquee} />
+
+    <BentoGrid>
+      <ProfileTile t={t} />
+      <FeaturedRepoTile t={t} />
+      <TwitchTile t={t} />
+      <LinkTile
+        href={site.linkedin.url}
+        color="blue"
+        icon="briefcase"
+        title="LinkedIn"
+        subtitle={site.linkedin.label}
+        category="social"
+      />
+      <GuidesTile t={t} />
+      <BlogTile t={t} />
+      <LinkTile
+        href={site.portfolio.url}
+        color="mint"
+        icon="grid"
+        title="Portfolio"
+        subtitle={site.portfolio.label}
+        category="code"
+      />
+      <LinkTile
+        href={site.x.url}
+        color="stone"
+        icon="at"
+        title="X"
+        subtitle={site.x.label}
+        category="social"
+      />
+      <BookCallTile t={t} />
+    </BentoGrid>
+
+    <Footer copyright={`© ${new Date().getFullYear()} ${site.owner.name}`}>
+      <PlaylistLink t={t} />
+    </Footer>
+  </PageShell>
+</BaseLayout>

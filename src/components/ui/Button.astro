@@ -1,0 +1,77 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'class'> {
+  variant: 'surface' | 'icon' | 'accent' | 'cta';
+  /** Con href se renderiza como link. */
+  href?: string;
+  target?: string;
+  rel?: string;
+  class?: string;
+}
+
+const { variant, href, class: className, type = 'button', ...rest } = Astro.props;
+---
+
+{href ? (
+  <a class:list={['press', 'btn', variant, className]} href={href} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button class:list={['press', 'btn', variant, className]} type={type} {...rest}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    border: var(--border-control) solid var(--c-ink);
+    border-radius: var(--radius-control);
+    color: var(--c-ink);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .surface {
+    min-height: var(--hit-min);
+    padding: 0 14px;
+    gap: 8px;
+    background: var(--c-surface);
+    box-shadow: var(--shadow-control);
+    font-size: 13px;
+  }
+  .icon {
+    width: var(--hit-min);
+    height: var(--hit-min);
+    justify-content: center;
+    background: var(--c-ink);
+    box-shadow: var(--shadow-control);
+  }
+  .accent {
+    align-self: flex-start;
+    min-height: var(--hit-min);
+    padding: 0 16px;
+    gap: 10px;
+    background: var(--c-yellow);
+    /* Fija en tinta también en modo oscuro (diseño). */
+    box-shadow: 3px 3px 0 var(--c-ink);
+    font-size: 14px;
+  }
+  .cta {
+    gap: 10px;
+    background: var(--c-yellow);
+    border-color: var(--c-paper);
+    padding: 0 20px;
+    box-shadow: 4px 4px 0 var(--c-paper);
+    font-family: var(--font-sans);
+    font-size: 18px;
+    min-height: 48px;
+  }
+  @media (max-width: 560px) {
+    .cta {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

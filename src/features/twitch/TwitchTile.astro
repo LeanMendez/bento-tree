@@ -1,0 +1,35 @@
+---
+import IconBox from '../../components/ui/IconBox.astro';
+import Pill from '../../components/ui/Pill.astro';
+import Tile from '../../components/ui/Tile.astro';
+import TileHead from '../../components/ui/TileHead.astro';
+import TileTitle from '../../components/ui/TileTitle.astro';
+import { site } from '../../config/site';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+  /** Estado en vivo; la detección real llega en F2d. */
+  live?: boolean;
+}
+const { t, live = false } = Astro.props;
+const { twitch } = site;
+---
+
+<Tile href={twitch.url} color="lilac" category="content">
+  <TileHead gap={8}>
+    <IconBox icon="tv" />
+    {live && <Pill variant="live">{t.live}</Pill>}
+  </TileHead>
+  <div>
+    <TileTitle size={26}>Twitch</TileTitle>
+    <div class="sub hide-sm">{live ? t.liveNote : twitch.label}</div>
+  </div>
+</Tile>
+
+<style>
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+</style>

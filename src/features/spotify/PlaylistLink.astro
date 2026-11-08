@@ -1,0 +1,44 @@
+---
+import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../config/site';
+import type { Strings } from '../../i18n';
+
+interface Props {
+  t: Strings;
+  /** Nombre de la playlist (F2c). Sin dato se usa el texto del diseño. */
+  name?: string;
+  href?: string;
+}
+const { t, name, href = site.spotify.defaultPlaylistUrl } = Astro.props;
+---
+
+<a class="playlist" href={href} title={name}>
+  <Icon name="headphones" size={18} />
+  <span class="name">{name ?? t.playlist}</span>
+</a>
+
+<style>
+  .playlist {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--hit-min);
+    max-width: 100%;
+    padding: 0 14px;
+    background: var(--c-green);
+    color: var(--c-ink);
+    border: var(--border-control) solid var(--c-ink);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+  }
+  .name {
+    /* Nombres largos de playlist: truncar (PLAN.md §5.3). */
+    max-width: 28ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .playlist :global(svg) {
+    flex: none;
+  }
+</style>
