@@ -4,20 +4,20 @@ Linktree personal con grid bento. Fuente de verdad visual: `design/` (exportado 
 
 ## 1. Decisiones de stack
 
-| Tema | Decisión | Motivo |
-|---|---|---|
-| Framework | Astro 7 + TypeScript estricto | Página casi estática; JS mínimo; server islands para tiles dinámicas |
-| Render | Página prerenderizada + `server:defer` en tiles dinámicas + endpoints `src/pages/api/*` | HTML estático gratis e ilimitado en Cloudflare; solo lo dinámico ejecuta el Worker |
-| Hosting | Cloudflare Workers (`@astrojs/cloudflare` 14) | Plan free alcanza; KV + Cache API incluidos |
-| Estado persistente | 1 namespace KV (`BENTO_KV`) solo para Spotify | Límite free: 1.000 escrituras/día; se escribe solo si cambia |
-| Caché | Cache API de Cloudflare con TTL por integración | Gratis, sin cuota de escrituras |
-| JS de cliente | Scripts Astro (`<script>`) en TS, sin framework UI | Filtros, tema, copiar, compartir, polling Twitch, Calendly |
-| Estilos | CSS propio con custom properties (tokens del diseño) + estilos scoped de Astro | Pixel perfect exige valores exactos; sin Tailwind para no traducir ni redondear |
-| Fuentes | Los mismos `.woff2` embebidos en el bundle del diseño, self-hosted | Glifos idénticos al diseño |
-| i18n | Rutas `/` (es) y `/en/` prerenderizadas; selector ES/EN = links; autodetección en primera visita | SEO por idioma; las server islands reciben `lang` sin hidratar diccionarios |
-| Tema | Claro por defecto (igual al diseño); preferencia en `localStorage`; script inline en `<head>` sin flash | Igual al diseño + persistencia |
-| Package manager | pnpm | Instalado |
-| Tests | Vitest (lógica de servicios) + Playwright (regresión visual contra el diseño + interacciones) | Pixel perfect verificable |
+| Tema               | Decisión                                                                                                | Motivo                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Framework          | Astro 7 + TypeScript estricto                                                                           | Página casi estática; JS mínimo; server islands para tiles dinámicas               |
+| Render             | Página prerenderizada + `server:defer` en tiles dinámicas + endpoints `src/pages/api/*`                 | HTML estático gratis e ilimitado en Cloudflare; solo lo dinámico ejecuta el Worker |
+| Hosting            | Cloudflare Workers (`@astrojs/cloudflare` 14)                                                           | Plan free alcanza; KV + Cache API incluidos                                        |
+| Estado persistente | 1 namespace KV (`BENTO_KV`) solo para Spotify                                                           | Límite free: 1.000 escrituras/día; se escribe solo si cambia                       |
+| Caché              | Cache API de Cloudflare con TTL por integración                                                         | Gratis, sin cuota de escrituras                                                    |
+| JS de cliente      | Scripts Astro (`<script>`) en TS, sin framework UI                                                      | Filtros, tema, copiar, compartir, polling Twitch, Calendly                         |
+| Estilos            | CSS propio con custom properties (tokens del diseño) + estilos scoped de Astro                          | Pixel perfect exige valores exactos; sin Tailwind para no traducir ni redondear    |
+| Fuentes            | Los mismos `.woff2` embebidos en el bundle del diseño, self-hosted                                      | Glifos idénticos al diseño                                                         |
+| i18n               | Rutas `/` (es) y `/en/` prerenderizadas; selector ES/EN = links; autodetección en primera visita        | SEO por idioma; las server islands reciben `lang` sin hidratar diccionarios        |
+| Tema               | Claro por defecto (igual al diseño); preferencia en `localStorage`; script inline en `<head>` sin flash | Igual al diseño + persistencia                                                     |
+| Package manager    | pnpm                                                                                                    | Instalado                                                                          |
+| Tests              | Vitest (lógica de servicios) + Playwright (regresión visual contra el diseño + interacciones)           | Pixel perfect verificable                                                          |
 
 ## 2. Arquitectura
 
@@ -86,7 +86,7 @@ Cada integración = **shell estático** + **contenido en server island** con fal
 ```astro
 <Tile span="s2" color="green" category="code" href={repo.url}>
   <FeaturedRepoContent server:defer lang={lang}>
-    <FeaturedRepoFallback slot="fallback" lang={lang} />  <!-- valores estáticos de site.ts = diseño -->
+    <FeaturedRepoFallback slot="fallback" lang={lang} /> <!-- valores estáticos de site.ts = diseño -->
   </FeaturedRepoContent>
 </Tile>
 ```
@@ -100,7 +100,7 @@ Cada integración = **shell estático** + **contenido en server island** con fal
 ```mermaid
 flowchart LR
   subgraph Worker[Cloudflare Worker]
-    GH[github.service<br/>TTL 1 h] 
+    GH[github.service<br/>TTL 1 h]
     RSS[rss.service<br/>TTL 1 h]
     SP[spotify.service<br/>TTL 2 min]
     TW[twitch.service<br/>TTL 60 s]
@@ -115,13 +115,13 @@ flowchart LR
 
 ### Reglas de negocio por integración
 
-| Integración | Fuente | Regla |
-|---|---|---|
-| GitHub | `GET /repos/{owner}/{repo}` (+ `/topics`) | Repo definido en `site.ts`. Título = `name`, descripción = `description`, tags = `language` + topics (máx. 2, como el diseño). Sin token; TTL 1 h |
-| Blog | `PUBLIC_BLOG_RSS_URL` | El feed **no viene ordenado**: ordenar por `pubDate` desc y tomar el primero. Sin `<description>` → solo título (igual al diseño) |
-| Spotify | `currently-playing` → si contexto = playlist propia: esa; si no: `recently-played` (50) buscando la última con contexto playlist cuyo owner = yo; si no hay: valor en KV; si no hay: playlist default de `site.ts` | KV se escribe solo si cambia el id. Access token cacheado ~55 min. Requiere Premium (OK) |
-| Twitch | Helix `GET /streams?user_login=$TWITCH_LOGIN` con app token (client credentials) | `/api/live` cacheado 60 s; cliente consulta cada 60 s solo con la pestaña visible (`visibilitychange`) |
-| Calendly | Widget popup oficial (script async) sobre `PUBLIC_CALENDLY_URL` | Evento real de 30 min; la UI ofrece "20 minutos" a propósito (10 min de margen entre llamadas): no cambiar el texto. Se carga recién al primer hover/foco/click del botón; sin JS → el link abre Calendly en otra pestaña |
+| Integración | Fuente                                                                                                                                                                                                             | Regla                                                                                                                                                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub      | `GET /repos/{owner}/{repo}` (+ `/topics`)                                                                                                                                                                          | Repo definido en `site.ts`. Título = `name`, descripción = `description`, tags = `language` + topics (máx. 2, como el diseño). Sin token; TTL 1 h                                                                         |
+| Blog        | `PUBLIC_BLOG_RSS_URL`                                                                                                                                                                                              | El feed **no viene ordenado**: ordenar por `pubDate` desc y tomar el primero. Sin `<description>` → solo título (igual al diseño)                                                                                         |
+| Spotify     | `currently-playing` → si contexto = playlist propia: esa; si no: `recently-played` (50) buscando la última con contexto playlist cuyo owner = yo; si no hay: valor en KV; si no hay: playlist default de `site.ts` | KV se escribe solo si cambia el id. Access token cacheado ~55 min. Requiere Premium (OK)                                                                                                                                  |
+| Twitch      | Helix `GET /streams?user_login=$TWITCH_LOGIN` con app token (client credentials)                                                                                                                                   | `/api/live` cacheado 60 s; cliente consulta cada 60 s solo con la pestaña visible (`visibilitychange`)                                                                                                                    |
+| Calendly    | Widget popup oficial (script async) sobre `PUBLIC_CALENDLY_URL`                                                                                                                                                    | Evento real de 30 min; la UI ofrece "20 minutos" a propósito (10 min de margen entre llamadas): no cambiar el texto. Se carga recién al primer hover/foco/click del botón; sin JS → el link abre Calendly en otra pestaña |
 
 ### Datos personales y secrets
 
@@ -129,13 +129,13 @@ flowchart LR
 
 Nota: estos datos son públicos en la página desplegada (es un linktree); lo que se evita es exponerlos en GitHub y que el repo sea reutilizable.
 
-| Variable | Tipo | Cuándo se usa |
-|---|---|---|
+| Variable                                                                                                                                                          | Tipo                                            | Cuándo se usa                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------- |
 | `PUBLIC_*` perfil y links: nombre, iniciales, rol, email, GitHub user/repo destacado, Twitch login, LinkedIn, X, portfolio, blog, RSS, Calendly, playlist default | `astro:env` `context: server`, `access: public` | Build (página prerenderizada) y runtime (islands) |
-| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN` | `astro:env` secret | Runtime |
-| `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET` | secret | Runtime |
-| `GITHUB_TOKEN` | secret opcional | Runtime |
-| `BENTO_KV` | binding KV | Runtime |
+| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`                                                                                             | `astro:env` secret                              | Runtime                                           |
+| `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`                                                                                                                        | secret                                          | Runtime                                           |
+| `GITHUB_TOKEN`                                                                                                                                                    | secret opcional                                 | Runtime                                           |
+| `BENTO_KV`                                                                                                                                                        | binding KV                                      | Runtime                                           |
 
 - Local: `.env` (build) y `.dev.vars` (runtime Worker), ambos en `.gitignore`. En el repo solo `.env.example` con nombres y valores ficticios.
 - Producción: variables de build en Cloudflare Workers Builds + `wrangler secret put` para runtime. `wrangler.jsonc` sin valores personales.
@@ -165,6 +165,7 @@ flowchart LR
 ```
 
 ### F0 — Fundaciones (en `main`)
+
 - `git init`, registrar repo en orca, `.gitignore`, `.editorconfig`.
 - Scaffold Astro 7 + TS strict + adapter Cloudflare + pnpm.
 - Extraer fuentes del bundle a `src/assets/fonts/`; `tokens.css`, `global.css`.
@@ -174,6 +175,7 @@ flowchart LR
 **Hecho cuando:** `pnpm dev` levanta, `pnpm verify` pasa, el harness visual genera capturas de la referencia en los 3 tamaños.
 
 ### F1 — UI estática pixel perfect (`feat/ui-static`)
+
 - Componentes `ui/` y `layout/`, `site.ts`, diccionarios es/en, `BaseLayout`.
 - Features sin backend: perfil + copiar email, filtros, tema, idioma (rutas), compartir, marquee.
 - Shells de tiles dinámicas con su fallback estático (contrato §2).
@@ -181,6 +183,7 @@ flowchart LR
 **Hecho cuando:** diff visual dentro del umbral en 3 tamaños × claro/oscuro × es/en; filtros, tema, idioma, copiar y compartir funcionan; navegación por teclado y foco iguales al diseño.
 
 ### F2 — Integraciones (paralelas, cada una toca solo `features/<x>/` + su tile)
+
 - **F2a GitHub:** servicio + island + tests de mapeo.
 - **F2b Blog:** parser RSS + orden por fecha + island + tests con el feed real como fixture.
 - **F2c Spotify:** `scripts/spotify-auth.ts`, refresh de token, cadena de fallback, KV solo en cambios, tests de cada rama de la cadena.
@@ -190,6 +193,7 @@ flowchart LR
 **Hecho cuando (cada una):** dato real visible en `wrangler dev`; API caída → fallback idéntico al diseño; tests unitarios de la regla de negocio; diff visual sin cambios con fixtures.
 
 ### F3 — Deploy (`chore/deploy`)
+
 - `wrangler.jsonc`, namespace KV, secrets, dominio, headers de caché, meta OG/SEO, favicon.
 - Smoke en producción: las 5 integraciones + medición de uso KV/Workers en el dashboard.
 

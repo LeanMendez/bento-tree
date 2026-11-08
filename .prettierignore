@@ -1,0 +1,7 @@
+dist/
+.astro/
+.wrangler/
+design/
+pnpm-lock.yaml
+playwright-report/
+test-results/

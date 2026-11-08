@@ -1,0 +1,51 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--c-ink);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Interacción compartida por tiles y controles (diseño: .tile / .press) */
+.tile,
+.press {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+a.tile:hover,
+.press:hover {
+  transform: translate(-3px, -3px);
+}
+
+a.tile:active,
+.press:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 transparent !important;
+}
+
+a.tile:focus-visible,
+.press:focus-visible,
+input:focus-visible {
+  outline: 3px dashed var(--c-ink);
+  outline-offset: 4px;
+}
