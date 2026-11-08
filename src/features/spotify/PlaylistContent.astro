@@ -1,0 +1,23 @@
+---
+import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } from 'astro:env/server';
+import { env } from 'cloudflare:workers';
+import type { Lang } from '../../i18n';
+import PlaylistPill from './PlaylistPill.astro';
+import { getCurrentPlaylist } from './spotify.service';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const playlist = await getCurrentPlaylist({
+  credentials: {
+    clientId: SPOTIFY_CLIENT_ID,
+    clientSecret: SPOTIFY_CLIENT_SECRET,
+    refreshToken: SPOTIFY_REFRESH_TOKEN,
+  },
+  store: env.BENTO_KV,
+});
+---
+
+<PlaylistPill lang={lang} playlist={playlist} />
